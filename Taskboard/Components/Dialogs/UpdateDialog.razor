@@ -1,5 +1,53 @@
-﻿<h3>UpdateDialog</h3>
+﻿@using Taskboard.Models
+@using Taskboard.Models.DTO
+@using Taskboard.Models.Enums
+@using Taskboard.Services
+@inject TaskService taskservice
+
+<MudDialog>
+    <TitleContent>
+        @MudDialog.Title
+    </TitleContent>
+    <DialogContent>
+        <MudTextField ShrinkLabel @bind-Value="CurrentTask.Title" Label="Titel" Variant="Variant.Text"></MudTextField>
+        <MudTextField ShrinkLabel @bind-Value="CurrentTask.Description" Label="Description" Variant="Variant.Text"></MudTextField>
+        <MudSelect @bind-Value="CurrentTask.Status" Label="Status">
+            @foreach (Status item in Enum.GetValues(typeof(Status)))
+            {
+                <MudSelectItem Value="@item">@item</MudSelectItem>
+            }
+        </MudSelect>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Abbrechen</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Speichern</MudButton>
+    </DialogActions>
+</MudDialog>
 
 @code {
+    [CascadingParameter] 
+    private IMudDialogInstance MudDialog { get; set; }
     
+    [Parameter]
+    public TaskItem CurrentTask { get; set; }
+    
+    private Status status;
+       
+
+    private async Task Submit()
+    {
+        UpdateTaskDTO updatedTask = new UpdateTaskDTO
+        {
+            Id = CurrentTask.Id,
+            Title = CurrentTask.Title,
+            Description = CurrentTask.Description,
+            Status = CurrentTask.Status
+        };
+            
+        await taskservice.UpdateTaskAsync(updatedTask);
+        StateHasChanged();
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    private void Cancel() => MudDialog.Cancel();
 }

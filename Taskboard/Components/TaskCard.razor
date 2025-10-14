@@ -1,21 +1,25 @@
-﻿@using Task = Taskboard.Data.Task
+﻿@using Taskboard.Components.Buttons
+@using Taskboard.Models;
+
+
 <div class="taskcard">
     <div class="tasktitle">
-        <h3>@CardTask.Title</h3>
+        <h3>@CardTaskItem.Title</h3>
+        <UpdateTaskButton SelectedTask="@CardTaskItem" />
     </div>
     <div class="taskdesc">
-        <span>@CardTask.Description</span>
+        <span>@CardTaskItem.Description</span>
     </div>
     <div class="taskcreated">
-        <span>@CardTask.Created</span>
+        <span>@CardTaskItem.Created</span>
     </div>
     <div class="taskstate">
-        <span>@CardTask.Status</span>
+        <span>@CardTaskItem.Status</span>
     </div>
     
 </div>
 
 @code {
     [Parameter] 
-    public Task CardTask { get; set; }
+    public TaskItem CardTaskItem { get; set; }
 }

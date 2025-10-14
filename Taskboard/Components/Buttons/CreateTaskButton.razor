@@ -1,7 +1,15 @@
-﻿
-<Button class="createTaskButton" onclick="">Task anlegen</Button>
-<dialog></dialog>
+﻿@using Microsoft.Extensions.Localization
+@using Taskboard.Components.Dialogs
+@inject IDialogService DialogService
+
+
+<MudButton @onclick="OpenDialogAsync" Variant="Variant.Filled" Color="Color.Primary"> Task anlegen </MudButton>
 
 @code {
-    
+    private Task OpenDialogAsync()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+
+        return DialogService.ShowAsync<CreateDialog>("Task anlegen", options);
+    }
 }

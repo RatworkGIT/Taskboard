@@ -1,10 +1,20 @@
+using Microsoft.EntityFrameworkCore;
 using Taskboard.Components;
+using MudBlazor.Services;
+using Taskboard.Models;
+using Taskboard.Models.Context;
+using Taskboard.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddMudServices();
+builder.Services.AddDbContext<TaskContext>(options => options.UseInMemoryDatabase("TaskTest"));
+
+builder.Services.AddScoped<TaskService>();
 
 var app = builder.Build();
 
