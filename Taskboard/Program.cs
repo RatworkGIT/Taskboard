@@ -13,7 +13,9 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddMudServices();
-builder.Services.AddDbContext<TaskContext>(options => options.UseInMemoryDatabase("TaskTest"));
+//builder.Services.AddDbContext<TaskContext>(options => options.UseInMemoryDatabase("TaskTest"));
+var connString = builder.Configuration.GetConnectionString("Default");
+builder.Services.AddDbContext<TaskContext>(options => options.UseNpgsql(connString));
 
 builder.Services.AddScoped<TaskService>();
 builder.Services.AddScoped<UpdateService>();
