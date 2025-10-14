@@ -1,13 +1,14 @@
-﻿using Taskboard.Models;
+﻿using Taskboard.Entities.Task;
+using Taskboard.Models;
 using Taskboard.Models.DTO;
 
-namespace Taskboard.Services;
+namespace Taskboard.Services.Task;
 
 public interface ITaskService
 {
-    public Task<TaskItem> CreateTaskAsync(TaskItem task);
-    public Task<List<TaskItem>> GetAllTasksAsync();
-    public Task<TaskItem> GetTaskByIdAsync(int id);
-    public Task<TaskItem> UpdateTaskAsync(UpdateTaskDTO task);
-    public Task DeleteTaskAsync(TaskItem task);
+    public Task<TaskItemEntity> CreateTaskAsync(TaskItemEntity task);
+    public Task<List<TaskItemEntity>> GetAllTasksAsync();
+    public Task<TaskItemEntity> GetTaskByIdAsync(int id);
+    public Task<TaskItemEntity> UpdateTaskAsync(UpdateTaskDTO task);
+    public System.Threading.Tasks.Task DeleteTaskAsync(TaskItemEntity task);
 }

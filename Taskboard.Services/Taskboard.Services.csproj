@@ -7,11 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Taskboard.Entities\Taskboard.Entities.csproj" />
       <ProjectReference Include="..\Taskboard.Models\Taskboard.Models.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Language\" />
     </ItemGroup>
 
 </Project>

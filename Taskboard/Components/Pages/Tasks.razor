@@ -1,28 +1,26 @@
 ﻿@page "/"
-@using Taskboard.Components.Buttons
-@using Taskboard.Components.Layout
-@using Taskboard.Models
+@using Taskboard.Entities.Task
 @using Taskboard.Models.DTO
-@using Taskboard.Models.Enums
-@using Taskboard.Services
+@using Taskboard.Services.Task
 @using Taskboard.Services.Update
+@using TaskStatus = Taskboard.Entities.Task.TaskStatus
 @inject TaskService taskservice
 @inject UpdateService updateservice
 
 
 
 
-<MudDropContainer T="TaskItem" Items="allTasks" ItemsSelector="@((TaskItem task, string dropzone) => task.Status.ToString() == dropzone)" ItemDropped="TaskMoved" Style="display:flex; flex-direction: row; width: 100%; height: 100%">
+<MudDropContainer T="TaskItemEntity" Items="allTasks" ItemsSelector="@((TaskItemEntity task, string dropzone) => task.TaskStatus.ToString() == dropzone)" ItemDropped="TaskMoved" Style="display:flex; flex-direction: row; width: 100%; height: 100%">
     <ChildContent>
-        <MudDropZone T="TaskItem" Identifier="ToDo" Style="display: flex; flex-direction: column; width: 30%; text-align: center; height: 100vh; border: 2px solid #f6f5f3; border-radius: 5px;">
+        <MudDropZone T="TaskItemEntity" Identifier="ToDo" Style="display: flex; flex-direction: column; width: 30%; text-align: center; height: 100vh; border: 2px solid #f6f5f3; border-radius: 5px;">
             <MudText Typo="Typo.h6">ToDo</MudText>
         </MudDropZone>
 
-        <MudDropZone T="TaskItem" Identifier="InProgress" Style="display: flex; flex-direction: column; width: 30%; text-align: center; height: 100vh; border: 2px solid #f6f5f3; border-radius: 5px;">
+        <MudDropZone T="TaskItemEntity" Identifier="InProgress" Style="display: flex; flex-direction: column; width: 30%; text-align: center; height: 100vh; border: 2px solid #f6f5f3; border-radius: 5px;">
             <MudText Typo="Typo.h6">In Progress</MudText>
         </MudDropZone>
 
-        <MudDropZone T="TaskItem" Identifier="Done" Style="display: flex; flex-direction: column; width: 30%; text-align: center; height: 100vh; border: 2px solid #f6f5f3; border-radius: 5px;">
+        <MudDropZone T="TaskItemEntity" Identifier="Done" Style="display: flex; flex-direction: column; width: 30%; text-align: center; height: 100vh; border: 2px solid #f6f5f3; border-radius: 5px;">
             <MudText Typo="Typo.h6">Done</MudText>
         </MudDropZone>
 
@@ -33,20 +31,20 @@
 </MudDropContainer>
 @code {
 
-    private List<TaskItem> allTasks = new();
+    private List<TaskItemEntity> allTasks = new();
 
-    private async Task TaskMoved(MudItemDropInfo<TaskItem> task)
+    private async Task TaskMoved(MudItemDropInfo<TaskItemEntity> task)
     {
 
-        if (task.DropzoneIdentifier == nameof(Status.ToDo))
+        if (task.DropzoneIdentifier == nameof(TaskStatus.ToDo))
         {
-            task.Item.Status = Status.ToDo;
-        }else if (task.DropzoneIdentifier == nameof(Status.InProgress))
+            task.Item.TaskStatus = TaskStatus.ToDo;
+        }else if (task.DropzoneIdentifier == nameof(TaskStatus.InProgress))
         {
-            task.Item.Status = Status.InProgress;
-        }else if (task.DropzoneIdentifier == nameof(Status.Done))
+            task.Item.TaskStatus = TaskStatus.InProgress;
+        }else if (task.DropzoneIdentifier == nameof(TaskStatus.Done))
         {
-            task.Item.Status = Status.Done;
+            task.Item.TaskStatus = TaskStatus.Done;
         }
 
         UpdateTaskDTO dto = new UpdateTaskDTO
@@ -54,7 +52,7 @@
             Id = task.Item.Id,
             Title = task.Item.Title,
             Description = task.Item.Description,
-            Status = task.Item.Status
+            TaskStatus = task.Item.TaskStatus
         };
         
         await taskservice.UpdateTaskAsync(dto);
@@ -74,7 +72,7 @@
         updateservice.UpdateRequested += UpdateTasks;
     }
 
-    private async Task<List<TaskItem>> LoadTasks()
+    private async Task<List<TaskItemEntity>> LoadTasks()
     {
         allTasks = await taskservice.GetAllTasksAsync();
         return allTasks;

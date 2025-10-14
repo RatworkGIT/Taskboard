@@ -1,8 +1,8 @@
-﻿@using Taskboard.Models
+﻿@using Taskboard.Entities.Task
 @using Taskboard.Models.DTO
-@using Taskboard.Models.Enums
-@using Taskboard.Services
+@using Taskboard.Services.Task
 @using Taskboard.Services.Update
+@using TaskStatus = Taskboard.Entities.Task.TaskStatus
 @inject TaskService taskservice
 @inject UpdateService updateservice
 
@@ -13,8 +13,8 @@
     <DialogContent>
         <MudTextField ShrinkLabel @bind-Value="CurrentTask.Title" Label="Titel" Variant="Variant.Text"></MudTextField>
         <MudTextField ShrinkLabel @bind-Value="CurrentTask.Description" Label="Description" Variant="Variant.Text"></MudTextField>
-        <MudSelect @bind-Value="CurrentTask.Status" Label="Status">
-            @foreach (Status item in Enum.GetValues(typeof(Status)))
+        <MudSelect @bind-Value="CurrentTask.TaskStatus" Label="TaskStatus">
+            @foreach (TaskStatus item in Enum.GetValues(typeof(TaskStatus)))
             {
                 <MudSelectItem Value="@item">@item</MudSelectItem>
             }
@@ -31,9 +31,9 @@
     private IMudDialogInstance MudDialog { get; set; }
     
     [Parameter]
-    public TaskItem CurrentTask { get; set; }
+    public TaskItemEntity CurrentTask { get; set; }
     
-    private Status status;
+    private TaskStatus _taskStatus;
        
 
     private async Task Submit()
@@ -43,7 +43,7 @@
             Id = CurrentTask.Id,
             Title = CurrentTask.Title,
             Description = CurrentTask.Description,
-            Status = CurrentTask.Status
+            TaskStatus = CurrentTask.TaskStatus
         };
             
         await taskservice.UpdateTaskAsync(updatedTask);

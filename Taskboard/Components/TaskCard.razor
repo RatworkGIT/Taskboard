@@ -1,4 +1,5 @@
 ﻿@using Taskboard.Components.Buttons
+@using Taskboard.Entities.Task
 @using Taskboard.Models;
 
 
@@ -15,12 +16,12 @@
         <span>@CardTaskItem.Created</span>
     </div>
     <div class="taskstate">
-        <span>@CardTaskItem.Status</span>
+        <span>@CardTaskItem.TaskStatus</span>
     </div>
     
 </div>
 
 @code {
     [Parameter] 
-    public TaskItem CardTaskItem { get; set; }
+    public TaskItemEntity CardTaskItem { get; set; }
 }
