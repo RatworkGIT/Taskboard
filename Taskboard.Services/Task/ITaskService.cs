@@ -9,4 +9,5 @@ public interface ITaskService
     public Task<List<TaskItem>> GetAllTasksAsync();
     public Task<TaskItem> GetTaskByIdAsync(int id);
     public Task<TaskItem> UpdateTaskAsync(UpdateTaskDTO task);
+    public Task DeleteTaskAsync(TaskItem task);
 }

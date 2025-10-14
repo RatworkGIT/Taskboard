@@ -4,6 +4,7 @@ using MudBlazor.Services;
 using Taskboard.Models;
 using Taskboard.Models.Context;
 using Taskboard.Services;
+using Taskboard.Services.Update;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,7 @@ builder.Services.AddMudServices();
 builder.Services.AddDbContext<TaskContext>(options => options.UseInMemoryDatabase("TaskTest"));
 
 builder.Services.AddScoped<TaskService>();
+builder.Services.AddScoped<UpdateService>();
 
 var app = builder.Build();
 
