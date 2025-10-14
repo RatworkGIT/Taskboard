@@ -1,0 +1,21 @@
+﻿@using Task = Taskboard.Data.Task
+<div class="taskcard">
+    <div class="tasktitle">
+        <h3>@CardTask.Title</h3>
+    </div>
+    <div class="taskdesc">
+        <span>@CardTask.Description</span>
+    </div>
+    <div class="taskcreated">
+        <span>@CardTask.Created</span>
+    </div>
+    <div class="taskstate">
+        <span>@CardTask.Status</span>
+    </div>
+    
+</div>
+
+@code {
+    [Parameter] 
+    public Task CardTask { get; set; }
+}
