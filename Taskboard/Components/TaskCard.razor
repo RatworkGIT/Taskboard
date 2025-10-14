@@ -1,0 +1,25 @@
+﻿@using Taskboard.Components.Buttons
+@using Taskboard.Models;
+
+
+<div class="taskcard">
+    <div class="tasktitle">
+        <h3>@CardTaskItem.Title</h3>
+        <UpdateTaskButton SelectedTask="@CardTaskItem" />
+    </div>
+    <div class="taskdesc">
+        <span>@CardTaskItem.Description</span>
+    </div>
+    <div class="taskcreated">
+        <span>@CardTaskItem.Created</span>
+    </div>
+    <div class="taskstate">
+        <span>@CardTaskItem.Status</span>
+    </div>
+    
+</div>
+
+@code {
+    [Parameter] 
+    public TaskItem CardTaskItem { get; set; }
+}

@@ -1,0 +1,126 @@
+﻿### .NET / Visual Studio ###
+# Build results
+bin/
+obj/
+out/
+*.exe
+*.dll
+*.pdb
+*.db
+*.cache
+*.log
+*.vspscc
+*.vssscc
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+*.rsuser
+
+# Visual Studio folders
+.vs/
+.idea/
+.vscode/
+
+# Rider/JetBrains
+.idea/
+*.sln.iml
+
+# Backup & temp files
+*.bak
+*.tmp
+*.temp
+*.swp
+*.orig
+*.old
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+project.lock.json
+artifacts/
+*.nuspec
+
+# ASP.NET Core
+appsettings.*.local.json
+appsettings.Development.json
+secrets.json
+
+# Blazor build output
+wwwroot/dist/
+wwwroot/css/generated/
+wwwroot/js/generated/
+*.gz
+*.br
+
+# Logs
+*.log
+Logs/
+logs/
+*.trace
+*.svclog
+
+# Publish
+publish/
+**/publish/
+*.publishsettings
+Properties/PublishProfiles/
+
+# Resharper / Rider
+_ReSharper*/
+*.DotSettings.user
+*.DotSettings
+
+# Coverage / Test results
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+
+# macOS / Windows
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# npm / front-end (if using JS tooling)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+pnpm-lock.yaml
+
+# SQLite / Local databases
+*.db
+*.sqlite
+*.sqlite3
+*.mdb
+
+# Environment variables
+.env
+.env.*
+
+# Generated resources
+*.g.*
+Generated/
+
+# Backup
+*.bak
+*.backup
+
+# JetBrains Rider Cache
+.idea/.idea/
+.idea/.idea.*
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/shelf/
+
+# Temporary publish folders
+obj/Release/net*/PubTmp/
+
+# Others (optional)
+*.resx.bak

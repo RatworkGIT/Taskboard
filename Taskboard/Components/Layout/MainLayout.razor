@@ -1,13 +1,22 @@
-﻿@inherits LayoutComponentBase
+﻿@using Taskboard.Components.Buttons
+@inherits LayoutComponentBase
+
+
+@* Required *@
+<MudThemeProvider />
+<MudPopoverProvider />
+
+@* Needed for dialogs *@
+<MudDialogProvider />
+
+@* Needed for snackbars *@
+<MudSnackbarProvider />
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu/>
-    </div>
-
     <main>
         <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+            <h1>Tasks</h1>
+            <CreateTaskButton />
         </div>
 
         <article class="content px-4">

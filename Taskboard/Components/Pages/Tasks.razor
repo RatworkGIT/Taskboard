@@ -1,0 +1,32 @@
+﻿@page "/"
+@using Taskboard.Components.Buttons
+@using Taskboard.Components.Layout
+@using Taskboard.Models
+@using Taskboard.Services
+@inject TaskService taskservice
+
+
+<div class="taskboard">
+    <div class="taskboard_head">
+        <CreateTaskButton />
+    </div>
+    <div class="taskboard_content">
+        @foreach (var item in allTasks)
+        {
+            <TaskCard CardTaskItem="@item" />
+        }
+    </div>
+
+</div>
+
+@code {
+
+    List<TaskItem> allTasks = new();
+    //TODO: Adjust for a List that displays all Tasks
+    protected override async Task<List<TaskItem>> OnInitializedAsync()
+    {
+        allTasks = await taskservice.GetAllTasksAsync();
+        return allTasks;
+    }
+    
+}

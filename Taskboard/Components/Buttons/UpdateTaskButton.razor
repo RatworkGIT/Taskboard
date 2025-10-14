@@ -1,0 +1,22 @@
+﻿@using Taskboard.Components.Dialogs
+@using Taskboard.Models
+@inject IDialogService DialogService
+
+
+<MudButton OnClick="@(() => OpenDialogAsync(SelectedTask))" Variant="Variant.Filled" Color="Color.Primary"><MudIcon Icon="@Icons.Material.Filled.Brush" Title="Bearbeiten" /> </MudButton>
+
+@code {
+    [Parameter]
+    public TaskItem SelectedTask { get; set; }
+    
+    private Task OpenDialogAsync(TaskItem task)
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        var dialogParameters = new DialogParameters<UpdateDialog>
+        {
+            {x => x.CurrentTask, task}
+        };
+
+        return DialogService.ShowAsync<UpdateDialog>("Task bearbeiten", dialogParameters, options);
+    }
+}

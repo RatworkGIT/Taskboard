@@ -1,0 +1,40 @@
+﻿@using Taskboard.Models
+@using Taskboard.Models.Enums
+@using Taskboard.Services
+@inject TaskService taskservice
+<MudDialog>
+    <TitleContent>
+        @MudDialog.Title
+    </TitleContent>
+    <DialogContent>
+        <MudTextField ShrinkLabel @bind-Value="task.Title" Label="Titel" Variant="Variant.Text"></MudTextField>
+        <MudTextField ShrinkLabel @bind-Value="task.Description" Label="Description" Variant="Variant.Text"></MudTextField>
+        <MudSelect T="Status" @bind-Value="status" Label="Status">
+            @foreach (Status item in Enum.GetValues(typeof(Status)))
+            {
+                <MudSelectItem Value="@item">@item</MudSelectItem>
+            }
+        </MudSelect>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Abbrechen</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Speichern</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] 
+    private IMudDialogInstance MudDialog { get; set; }
+
+    private Status status = Status.ToDo;
+    
+    private TaskItem task = new TaskItem();
+
+    private async void Submit()
+    {
+        await taskservice.CreateTaskAsync(task);
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    private void Cancel() => MudDialog.Cancel();
+}
