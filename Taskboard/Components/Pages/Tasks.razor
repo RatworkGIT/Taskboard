@@ -2,27 +2,79 @@
 @using Taskboard.Components.Buttons
 @using Taskboard.Components.Layout
 @using Taskboard.Models
+@using Taskboard.Models.DTO
+@using Taskboard.Models.Enums
 @using Taskboard.Services
+@using Taskboard.Services.Update
 @inject TaskService taskservice
+@inject UpdateService updateservice
 
 
-<div class="taskboard">
-    <div class="taskboard_head">
-    </div>
-    <div class="taskboard_content">
-        @foreach (var item in allTasks)
-        {
-            <TaskCard CardTaskItem="@item" />
-        }
-    </div>
 
-</div>
 
+<MudDropContainer T="TaskItem" Items="allTasks" ItemsSelector="@((TaskItem task, string dropzone) => task.Status.ToString() == dropzone)" ItemDropped="TaskMoved" Style="display:flex; flex-direction: row; width: 100%; height: 100%">
+    <ChildContent>
+        <MudDropZone T="TaskItem" Identifier="ToDo" Style="display: flex; flex-direction: column; width: 30%; text-align: center; height: 100vh; border: 2px solid #f6f5f3; border-radius: 5px;">
+            <MudText Typo="Typo.h6">ToDo</MudText>
+        </MudDropZone>
+
+        <MudDropZone T="TaskItem" Identifier="InProgress" Style="display: flex; flex-direction: column; width: 30%; text-align: center; height: 100vh; border: 2px solid #f6f5f3; border-radius: 5px;">
+            <MudText Typo="Typo.h6">In Progress</MudText>
+        </MudDropZone>
+
+        <MudDropZone T="TaskItem" Identifier="Done" Style="display: flex; flex-direction: column; width: 30%; text-align: center; height: 100vh; border: 2px solid #f6f5f3; border-radius: 5px;">
+            <MudText Typo="Typo.h6">Done</MudText>
+        </MudDropZone>
+
+    </ChildContent>
+    <ItemRenderer>
+        <TaskCard CardTaskItem="@context" />
+    </ItemRenderer>
+</MudDropContainer>
 @code {
 
-    List<TaskItem> allTasks = new();
-    //TODO: Adjust for a List that displays all Tasks
-    protected override async Task<List<TaskItem>> OnInitializedAsync()
+    private List<TaskItem> allTasks = new();
+
+    private async Task TaskMoved(MudItemDropInfo<TaskItem> task)
+    {
+
+        if (task.DropzoneIdentifier == nameof(Status.ToDo))
+        {
+            task.Item.Status = Status.ToDo;
+        }else if (task.DropzoneIdentifier == nameof(Status.InProgress))
+        {
+            task.Item.Status = Status.InProgress;
+        }else if (task.DropzoneIdentifier == nameof(Status.Done))
+        {
+            task.Item.Status = Status.Done;
+        }
+
+        UpdateTaskDTO dto = new UpdateTaskDTO
+        {
+            Id = task.Item.Id,
+            Title = task.Item.Description,
+            Description = task.Item.Description,
+            Status = task.Item.Status
+        };
+        
+        await taskservice.UpdateTaskAsync(dto);
+        
+
+    }
+
+    private async void UpdateTasks()
+    {
+        await LoadTasks();
+        StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadTasks();
+        updateservice.UpdateRequested += UpdateTasks;
+    }
+
+    private async Task<List<TaskItem>> LoadTasks()
     {
         allTasks = await taskservice.GetAllTasksAsync();
         return allTasks;
