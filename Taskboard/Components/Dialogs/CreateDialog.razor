@@ -1,7 +1,10 @@
 ﻿@using Taskboard.Models
 @using Taskboard.Models.Enums
 @using Taskboard.Services
+@using Taskboard.Services.Update
 @inject TaskService taskservice
+@inject UpdateService updateservice
+
 <MudDialog>
     <TitleContent>
         @MudDialog.Title
@@ -34,6 +37,7 @@
     {
         await taskservice.CreateTaskAsync(task);
         MudDialog.Close(DialogResult.Ok(true));
+        updateservice.CallRequestUpdate();
     }
 
     private void Cancel() => MudDialog.Cancel();

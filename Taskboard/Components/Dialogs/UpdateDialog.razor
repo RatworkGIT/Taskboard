@@ -2,7 +2,9 @@
 @using Taskboard.Models.DTO
 @using Taskboard.Models.Enums
 @using Taskboard.Services
+@using Taskboard.Services.Update
 @inject TaskService taskservice
+@inject UpdateService updateservice
 
 <MudDialog>
     <TitleContent>
@@ -47,6 +49,7 @@
         await taskservice.UpdateTaskAsync(updatedTask);
         StateHasChanged();
         MudDialog.Close(DialogResult.Ok(true));
+        updateservice.CallRequestUpdate();
     }
 
     private void Cancel() => MudDialog.Cancel();
