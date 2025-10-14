@@ -1,6 +1,16 @@
-﻿
-<MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Delete</MudButton>
+﻿@using Taskboard.Models
+@using Taskboard.Services
+@inject TaskService taskservice
+
+
+<MudButton OnClick="@(() => DeleteTaskAsync(SelectedTask))" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Delete</MudButton>
 
 @code {
-    
+    [Parameter]
+    public TaskItem SelectedTask { get; set; }
+
+    private async Task DeleteTaskAsync(TaskItem task)
+    {
+        await taskservice.DeleteTaskAsync(task);
+    }
 }

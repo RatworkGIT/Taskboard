@@ -48,4 +48,10 @@ public class TaskService : ITaskService
         await _db.SaveChangesAsync();
         return entity;
     }
+
+    public async Task DeleteTaskAsync(TaskItem task)
+    {
+        _db.Tasks.Remove(task);
+        await _db.SaveChangesAsync();
+    }
 }
