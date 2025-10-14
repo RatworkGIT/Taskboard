@@ -16,7 +16,7 @@ public class TaskService : ITaskService
     
     public async Task<TaskItemEntity> CreateTaskAsync(TaskItemEntity task)
     {
-        task.Created = DateTime.Now;
+        task.Created = DateTime.UtcNow;
         _db.Tasks.Add(task);
         await _db.SaveChangesAsync();
         return task;

@@ -1,5 +1,8 @@
-﻿namespace Taskboard.Entities.Task;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
+namespace Taskboard.Entities.Task;
+
+[Table("TaskItem")]
 public class TaskItemEntity
 {
     public int Id { get; set; }
