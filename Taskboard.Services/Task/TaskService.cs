@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Taskboard.Models.Context;
-using Taskboard.Models;
+using Taskboard.Entities.Context;
+using Taskboard.Entities.Task;
 using Taskboard.Models.DTO;
 
-namespace Taskboard.Services;
+namespace Taskboard.Services.Task;
 
 public class TaskService : ITaskService
 {
@@ -14,7 +14,7 @@ public class TaskService : ITaskService
         _db = context;
     }
     
-    public async Task<TaskItem> CreateTaskAsync(TaskItem task)
+    public async Task<TaskItemEntity> CreateTaskAsync(TaskItemEntity task)
     {
         task.Created = DateTime.Now;
         _db.Tasks.Add(task);
@@ -22,18 +22,18 @@ public class TaskService : ITaskService
         return task;
     }
 
-    public async Task<List<TaskItem>> GetAllTasksAsync()
+    public async Task<List<TaskItemEntity>> GetAllTasksAsync()
     {
         return await _db.Tasks.ToListAsync();
     }
 
-    public async Task<TaskItem> GetTaskByIdAsync(int id)
+    public async Task<TaskItemEntity> GetTaskByIdAsync(int id)
     {
         var task = await _db.Tasks.FindAsync(id);
         return task ?? throw new KeyNotFoundException($"Task with ID: {id} not found");
     }
 
-    public async Task<TaskItem> UpdateTaskAsync(UpdateTaskDTO dto)
+    public async Task<TaskItemEntity> UpdateTaskAsync(UpdateTaskDTO dto)
     {
         var entity = await _db.Tasks.FindAsync(dto.Id);
         if (entity == null)
@@ -43,13 +43,13 @@ public class TaskService : ITaskService
         
         entity.Title = dto.Title;
         entity.Description = dto.Description;
-        entity.Status = dto.Status;
+        entity.TaskStatus = dto.TaskStatus;
         
         await _db.SaveChangesAsync();
         return entity;
     }
 
-    public async Task DeleteTaskAsync(TaskItem task)
+    public async System.Threading.Tasks.Task DeleteTaskAsync(TaskItemEntity task)
     {
         _db.Tasks.Remove(task);
         await _db.SaveChangesAsync();

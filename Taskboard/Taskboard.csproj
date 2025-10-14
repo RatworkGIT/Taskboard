@@ -13,6 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Taskboard.Entities\Taskboard.Entities.csproj" />
       <ProjectReference Include="..\Taskboard.Models\Taskboard.Models.csproj" />
       <ProjectReference Include="..\Taskboard.Services\Taskboard.Services.csproj" />
     </ItemGroup>

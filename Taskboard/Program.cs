@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Taskboard.Components;
 using MudBlazor.Services;
-using Taskboard.Models;
-using Taskboard.Models.Context;
+using Taskboard.Entities.Context;
 using Taskboard.Services;
+using Taskboard.Services.Task;
 using Taskboard.Services.Update;
 
 var builder = WebApplication.CreateBuilder(args);
