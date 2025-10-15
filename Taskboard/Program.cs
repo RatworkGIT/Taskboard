@@ -3,6 +3,7 @@ using Taskboard.Components;
 using MudBlazor.Services;
 using Taskboard.Entities.Context;
 using Taskboard.Services;
+using Taskboard.Services.Format;
 using Taskboard.Services.Task;
 using Taskboard.Services.Update;
 
@@ -19,6 +20,7 @@ builder.Services.AddDbContext<TaskContext>(options => options.UseNpgsql(connStri
 
 builder.Services.AddScoped<TaskService>();
 builder.Services.AddScoped<UpdateService>();
+builder.Services.AddScoped<FormatService>();
 
 var app = builder.Build();
 
