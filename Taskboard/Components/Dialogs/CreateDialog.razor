@@ -1,18 +1,20 @@
-﻿@using Taskboard.Entities.Task
+﻿@using Microsoft.Extensions.Localization
+@using Taskboard.Entities.Task
 @using Taskboard.Services.Task
 @using Taskboard.Services.Update
 @using TaskStatus = Taskboard.Entities.Task.TaskStatus
 @inject TaskService taskservice
 @inject UpdateService updateservice
+@inject IStringLocalizer<SharedResource> localizer
 
 <MudDialog>
     <TitleContent>
         @MudDialog.Title
     </TitleContent>
     <DialogContent>
-        <MudTextField ShrinkLabel @bind-Value="task.Title" Label="Titel" Variant="Variant.Text"></MudTextField>
-        <MudTextField ShrinkLabel @bind-Value="task.Description" Label="Description" Variant="Variant.Text"></MudTextField>
-        <MudSelect T="TaskStatus" @bind-Value="_taskStatus" Label="TaskStatus">
+        <MudTextField ShrinkLabel @bind-Value="task.Title" Label="@localizer["Title"]" Variant="Variant.Text"></MudTextField>
+        <MudTextField ShrinkLabel @bind-Value="task.Description" Label="@localizer["Description"]" Variant="Variant.Text"></MudTextField>
+        <MudSelect T="TaskStatus" @bind-Value="_taskStatus" Label="@localizer["TaskStatus"]">
             @foreach (TaskStatus item in Enum.GetValues(typeof(TaskStatus)))
             {
                 <MudSelectItem Value="@item">@item</MudSelectItem>
@@ -20,8 +22,8 @@
         </MudSelect>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel">Abbrechen</MudButton>
-        <MudButton Color="Color.Primary" OnClick="Submit">Speichern</MudButton>
+        <MudButton OnClick="Cancel">@localizer["Cancel"]</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">@localizer["Save"]</MudButton>
     </DialogActions>
 </MudDialog>
 
