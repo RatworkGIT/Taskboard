@@ -1,8 +1,10 @@
-﻿@using Taskboard.Components.Buttons
+﻿@using Microsoft.Extensions.Localization
+@using Taskboard.Components.Buttons
 @using Taskboard.Entities.Task
 @using Taskboard.Models;
 @using Taskboard.Services.Format
 @inject FormatService formatservice
+@inject IStringLocalizer<SharedResource> localizer
 
 <div class="taskcard">
     <div class="tasktitle">

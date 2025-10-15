@@ -6,6 +6,9 @@ using Taskboard.Services;
 using Taskboard.Services.Format;
 using Taskboard.Services.Task;
 using Taskboard.Services.Update;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.DependencyInjection;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +25,18 @@ builder.Services.AddScoped<TaskService>();
 builder.Services.AddScoped<UpdateService>();
 builder.Services.AddScoped<FormatService>();
 
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
 var app = builder.Build();
+
+var supportedCultures = new[] { "en", "de" };
+var localizedOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture("en")
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+
+app.UseRequestLocalization(localizedOptions);
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

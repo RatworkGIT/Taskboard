@@ -1,16 +1,17 @@
 ﻿@using Microsoft.Extensions.Localization
 @using Taskboard.Components.Dialogs
+@using Taskboard
 @inject IDialogService DialogService
+@inject IStringLocalizer<SharedResource> localizer
 
 
-
-<MudButton @onclick="OpenDialogAsync" Variant="Variant.Filled" Color="Color.Primary"> Task anlegen </MudButton>
+<MudButton @onclick="OpenDialogAsync" Variant="Variant.Filled" Color="Color.Primary"> @localizer["CreateTask"] </MudButton>
 
 @code {
     private Task OpenDialogAsync()
     {
         var options = new DialogOptions { CloseOnEscapeKey = true };
 
-        return DialogService.ShowAsync<CreateDialog>("Task anlegen", options);
+        return DialogService.ShowAsync<CreateDialog>(localizer["CreateTask"], options);
     }
 }
