@@ -1,7 +1,8 @@
 ﻿@using Taskboard.Components.Buttons
 @using Taskboard.Entities.Task
 @using Taskboard.Models;
-
+@using Taskboard.Services.Format
+@inject FormatService formatservice
 
 <div class="taskcard">
     <div class="tasktitle">
@@ -13,7 +14,7 @@
         <span>@CardTaskItem.Description</span>
     </div>
     <div class="taskcreated">
-        <span>@CardTaskItem.Created</span>
+        <span>@sinceCreation</span>
     </div>
     <div class="taskstate">
         <span>@CardTaskItem.TaskStatus</span>
@@ -24,4 +25,13 @@
 @code {
     [Parameter] 
     public TaskItemEntity CardTaskItem { get; set; }
+
+    public string sinceCreation = string.Empty;
+    
+    protected override void OnInitialized()
+    {
+        sinceCreation = formatservice.TimeSinceCreation(CardTaskItem.Created);
+    }
+
+    
 }
