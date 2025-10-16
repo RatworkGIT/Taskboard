@@ -40,4 +40,16 @@
     <data name="Edit" xml:space="preserve">
     <value>Bearbeiten</value>
   </data>
+    <data name="DeleteWarningTitle" xml:space="preserve">
+    <value>Aufgabe Löschen?</value>
+  </data>    
+  <data name="DeleteWarningText" xml:space="preserve">
+    <value>Möchten Sie diese Aufgabe wirklich löschen?</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+    <data name="NoTitleInputError" xml:space="preserve">
+    <value>Titel muss ausgefüllt werden</value>
+  </data>
 </root>

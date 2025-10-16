@@ -9,6 +9,7 @@ using Taskboard.Services.Update;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.DependencyInjection;
 using System.Globalization;
+using MudBlazor;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddMudServices();
+builder.Services.AddMudServices(config =>
+{
+    config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight;
+});
 //builder.Services.AddDbContext<TaskContext>(options => options.UseInMemoryDatabase("TaskTest"));
 var connString = builder.Configuration.GetConnectionString("Default");
 builder.Services.AddDbContext<TaskContext>(options => options.UseNpgsql(connString));

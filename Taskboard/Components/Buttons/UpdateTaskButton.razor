@@ -1,16 +1,19 @@
-﻿@using Taskboard.Components.Dialogs
+﻿@using Microsoft.Extensions.Localization
+@using Taskboard.Components.Dialogs
 @using Taskboard.Entities.Task
 @using Taskboard.Models
+@using Taskboard.Models.DTO
 @inject IDialogService DialogService
+@inject IStringLocalizer<SharedResource> localizer
 
 
 <MudButton OnClick="@(() => OpenDialogAsync(SelectedTask))" Variant="Variant.Filled" Color="Color.Primary"><MudIcon Icon="@Icons.Material.Filled.Brush" Title="Edit" /> </MudButton>
 
 @code {
     [Parameter]
-    public TaskItemEntity SelectedTask { get; set; }
+    public TaskItemDTO SelectedTask { get; set; }
     
-    private Task OpenDialogAsync(TaskItemEntity task)
+    private Task OpenDialogAsync(TaskItemDTO task)
     {
         var options = new DialogOptions { CloseOnEscapeKey = true };
         var dialogParameters = new DialogParameters<UpdateDialog>
@@ -18,6 +21,6 @@
             {x => x.CurrentTask, task}
         };
 
-        return DialogService.ShowAsync<UpdateDialog>("Task bearbeiten", dialogParameters, options);
+        return DialogService.ShowAsync<UpdateDialog>( @localizer["Edit"], dialogParameters, options);
     }
 }

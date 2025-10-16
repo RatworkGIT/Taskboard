@@ -1,22 +1,50 @@
-﻿@using Taskboard.Entities.Task
+﻿@using Microsoft.Extensions.Localization
+@using Taskboard.Components.Dialogs
+@using Taskboard.Entities.Task
 @using Taskboard.Models
+@using Taskboard.Models.DTO
 @using Taskboard.Services
 @using Taskboard.Services.Task
 @using Taskboard.Services.Update
 @inject TaskService taskservice
 @inject UpdateService updateservice
+@inject IDialogService dialogservice
+@inject IStringLocalizer<SharedResource> localizer
 
-
-<MudButton OnClick="@(() => DeleteTaskAsync(SelectedTask))" Variant="Variant.Filled" Color="Color.Error" ><MudIcon Icon="@Icons.Material.Filled.Delete" Title="Delete" /></MudButton>
-
+<MudButton OnClick="@(() => DeleteTaskAsync(SelectedTask))" Variant="Variant.Filled" Color="Color.Error" ><MudIcon Icon="@Icons.Material.Filled.Delete" Title="@localizer["Delete"]" /></MudButton>
+<MudMessageBox @ref="_deleteMsgBox" Title="@localizer["DeleteWarningTitle"]">
+    <MessageContent>
+        @localizer["DeleteWarningText"]
+    </MessageContent>
+    <YesButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Error" ><MudIcon Icon="@Icons.Material.Filled.DeleteForever" Title="@localizer["Delete"]"></MudIcon></MudButton>
+    </YesButton>
+    <NoButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Error" ><MudIcon Icon="@Icons.Material.Filled.Cancel" Title="@localizer["Cancel"]"></MudIcon></MudButton>
+    </NoButton>
+</MudMessageBox>
 @code {
     [Parameter]
-    public TaskItemEntity SelectedTask { get; set; }
+    public TaskItemDTO SelectedTask { get; set; }
+    [Parameter]
+    public IMudDialogInstance CurrentDialog { get; set; }
 
-    private async Task DeleteTaskAsync(TaskItemEntity task)
+    private MudMessageBox _deleteMsgBox;
+
+    private async Task DeleteTaskAsync(TaskItemDTO task)
     {
-        await taskservice.DeleteTaskAsync(task);
-        updateservice.CallRequestUpdate();
+        bool? result = await _deleteMsgBox.ShowAsync();
+        if (result == false)
+        {
+            //Cancelled
+            
+        }
+        else
+        {
+            CurrentDialog.Close(DialogResult.Ok((true)));
+            await taskservice.DeleteTaskAsync(task);
+            updateservice.CallRequestUpdate();
+        }
 
     }
 }

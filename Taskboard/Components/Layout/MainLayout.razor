@@ -3,7 +3,7 @@
 
 
 @* Required *@
-<MudThemeProvider />
+<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_theme"/>
 <MudPopoverProvider />
 
 @* Needed for dialogs *@
@@ -30,3 +30,10 @@
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
 </div>
+
+@code {
+
+    private MudTheme _theme = new();
+    private bool _isDarkMode;
+
+}
