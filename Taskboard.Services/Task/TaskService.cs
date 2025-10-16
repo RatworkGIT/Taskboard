@@ -20,7 +20,7 @@ public class TaskService : ITaskService
         var entity = task.ToEntity();
         _db.Tasks.Add(entity);
         await _db.SaveChangesAsync();
-        return task;
+        return entity.ToDTO();
     }
 
     public async Task<List<TaskItemDTO>> GetAllTasksAsync()
@@ -36,13 +36,13 @@ public class TaskService : ITaskService
         return dtoList;
     }
 
-    public async Task<TaskItemEntity> GetTaskByIdAsync(int id)
+    public async Task<TaskItemDTO> GetTaskByIdAsync(Guid id)
     {
         var task = await _db.Tasks.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
-        return task ?? throw new KeyNotFoundException($"Task with ID: {id} not found");
+        return task.ToDTO() ?? throw new KeyNotFoundException($"Task with ID: {id} not found");
     }
 
-    public async Task<TaskItemEntity> UpdateTaskAsync(TaskItemDTO dto)
+    public async Task<TaskItemDTO> UpdateTaskAsync(TaskItemDTO dto)
     {
         var entity = await _db.Tasks.FindAsync(dto.Id);
         if (entity == null)
@@ -55,7 +55,7 @@ public class TaskService : ITaskService
         entity.TaskStatus = dto.TaskStatus;
         
         await _db.SaveChangesAsync();
-        return entity;
+        return entity.ToDTO();
     }
 
     public async System.Threading.Tasks.Task DeleteTaskAsync(TaskItemDTO dto)

@@ -3,11 +3,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Taskboard.Entities.Task;
 
-[Table("TaskItem")]
+[Table("Taskitem")]
 public class TaskItemEntity
 {
     [Key]
-    public int Id { get; set; }
+    public Guid Id { get; set; } =  Guid.NewGuid();
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Number { get; set; }
     [MaxLength(50)]
     public string Title { get; set; } = String.Empty;
     [MaxLength(200)]
