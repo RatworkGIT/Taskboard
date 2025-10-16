@@ -8,7 +8,8 @@ public static class TaskItemMapper
     /// Converts from DTO to Entity
     public static TaskItemEntity ToEntity(this TaskItemDTO dto) => new TaskItemEntity
     {
-        Id = dto.Id,
+        Id = dto.Id == Guid.Empty ? Guid.NewGuid() : dto.Id,
+        Number = dto.Number,
         Title = dto.Title,
         Description = dto.Description,
         TaskStatus = dto.TaskStatus,
@@ -19,6 +20,7 @@ public static class TaskItemMapper
     public static TaskItemDTO ToDTO(this TaskItemEntity entity) => new TaskItemDTO
     {
         Id = entity.Id,
+        Number =  entity.Number,
         Title = entity.Title,
         Description = entity.Description,
         TaskStatus = entity.TaskStatus,
