@@ -39,5 +39,17 @@
   </data>
     <data name="Edit" xml:space="preserve">
     <value>Edit</value>
+  </data>    
+  <data name="DeleteWarningTitle" xml:space="preserve">
+    <value>Delete Task?</value>
+  </data>
+  <data name="DeleteWarningText" xml:space="preserve">
+    <value>Do you really want to Delete this Task?</value>
+  </data>
+    <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>    
+    <data name="NoTitleInputError" xml:space="preserve">
+    <value>Title has to be filled</value>
   </data>
 </root>

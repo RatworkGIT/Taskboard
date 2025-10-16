@@ -5,7 +5,6 @@ public class FormatService : IFormatService
     public string TimeSinceCreation(DateTime created)
     {
         var span = DateTime.UtcNow - created;
-        
         if (span.TotalSeconds < 60)
             return $"{(int)span.TotalSeconds}s ago";
         if (span.TotalMinutes < 60)

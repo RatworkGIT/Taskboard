@@ -1,4 +1,6 @@
-﻿@using Microsoft.Extensions.Localization
+﻿@using Microsoft.AspNetCore.Mvc
+@using Microsoft.Extensions.Localization
+@using Taskboard.Components.Buttons
 @using Taskboard.Entities.Task
 @using Taskboard.Models.DTO
 @using Taskboard.Services.Task
@@ -6,16 +8,27 @@
 @using TaskStatus = Taskboard.Entities.Task.TaskStatus
 @inject TaskService taskservice
 @inject UpdateService updateservice
+@inject ISnackbar Snackbar
 @inject IStringLocalizer<SharedResource> localizer
 
-<MudDialog>
+<MudDialog Class="dialog-background">
     <TitleContent>
-        @MudDialog.Title
+        <MudStack Row="true" Justify="Justify.SpaceBetween">
+            <MudText Typo="Typo.h5">@MudDialog.Title</MudText>
+                <MudStack Row="true">
+                    <!-- <UpdateTaskButton SelectedTask="@CurrentTask"/> -->
+                    <DeleteTaskButton SelectedTask="@CurrentTask" CurrentDialog="@MudDialog"/>
+                </MudStack>
+        </MudStack>
     </TitleContent>
     <DialogContent>
-        <MudTextField ShrinkLabel @bind-Value="CurrentTask.Title" Label="@localizer["Title"]" Variant="Variant.Text"></MudTextField>
-        <MudTextField ShrinkLabel @bind-Value="CurrentTask.Description" Label="@localizer["Description"]" Variant="Variant.Text"></MudTextField>
-        <MudSelect @bind-Value="CurrentTask.TaskStatus" Label="@localizer["TaskStatus"]">
+        <MudForm @bind-IsValid="@successTitle">
+            <MudTextField @ref="titleField" AutoFocus="true" DebounceInterval="400" Validation="@(() => CheckForInput(successTitle, titleField))" Required="true" RequiredError="@localizer["NoTitleInputError"]" InputType="InputType.Text" MaxLength="50" ShrinkLabel @bind-Value="CurrentTask.Title" Label="@localizer["Title"]" Variant="Variant.Outlined"></MudTextField>
+        </MudForm>
+            <br/>
+        <MudTextField MaxLength="200" AutoGrow Lines="5" ShrinkLabel @bind-Value="CurrentTask.Description" Label="@localizer["Description"]" Variant="Variant.Outlined"></MudTextField>
+        <br/>
+        <MudSelect @bind-Value="CurrentTask.TaskStatus" Variant="Variant.Outlined" Label="@localizer["TaskStatus"]">
             @foreach (TaskStatus item in Enum.GetValues(typeof(TaskStatus)))
             {
                 <MudSelectItem Value="@item">@item</MudSelectItem>
@@ -28,31 +41,65 @@
     </DialogActions>
 </MudDialog>
 
+<style>
+    .dialog-background {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
 @code {
     [CascadingParameter] 
     private IMudDialogInstance MudDialog { get; set; }
     
     [Parameter]
-    public TaskItemEntity CurrentTask { get; set; }
+    public TaskItemDTO CurrentTask { get; set; }
+    
+    private bool successTitle;
+    private MudTextField<string> titleField;
+    private Snackbar? snackbar;
     
     private TaskStatus _taskStatus;
-       
+    
+    private bool CheckForInput(bool success, MudTextField<string> field)
+    {
+        if (field.HasErrors && CurrentTask.Title is null)
+        {
+            success = false;
+            return success;
+        }
 
+        success = true;
+        return success;
+    }
+
+    private void ShowError(string msg)
+    {
+        snackbar = Snackbar.Add(msg, Severity.Error, config =>
+        {
+            config.SnackbarVariant = Variant.Filled;
+            config.VisibleStateDuration = int.MaxValue;
+        });
+    }
+
+    
     private async Task Submit()
     {
-        UpdateTaskDTO updatedTask = new UpdateTaskDTO
+
+        if (successTitle)
         {
-            Id = CurrentTask.Id,
-            Title = CurrentTask.Title,
-            Description = CurrentTask.Description,
-            TaskStatus = CurrentTask.TaskStatus
-        };
-            
-        await taskservice.UpdateTaskAsync(updatedTask);
-        StateHasChanged();
-        MudDialog.Close(DialogResult.Ok(true));
-        updateservice.CallRequestUpdate();
+            await taskservice.UpdateTaskAsync(CurrentTask);
+            StateHasChanged();
+            MudDialog.Close(DialogResult.Ok(true));
+            updateservice.CallRequestUpdate();
+        }
+        else
+        {
+            var msg = @localizer["NoTitleInputError"];
+            ShowError(msg);
+        }
     }
+    
 
     private void Cancel() => MudDialog.Cancel();
 }

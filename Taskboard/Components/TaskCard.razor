@@ -1,38 +1,51 @@
 ﻿@using Microsoft.Extensions.Localization
 @using Taskboard.Components.Buttons
+@using Taskboard.Components.Dialogs
 @using Taskboard.Entities.Task
 @using Taskboard.Models;
+@using Taskboard.Models.DTO
 @using Taskboard.Services.Format
 @inject FormatService formatservice
+@inject IDialogService DialogService
 @inject IStringLocalizer<SharedResource> localizer
 
-<div class="taskcard">
-    <div class="tasktitle">
-        <h3>@CardTaskItem.Title</h3>
-        <UpdateTaskButton SelectedTask="@CardTaskItem" />
-        <DeleteTaskButton SelectedTask="@CardTaskItem"></DeleteTaskButton>
-    </div>
-    <div class="taskdesc">
-        <span>@CardTaskItem.Description</span>
-    </div>
-    <div class="taskcreated">
-        <span>@sinceCreation</span>
-    </div>
-    <div class="taskstate">
-        <span>@CardTaskItem.TaskStatus</span>
-    </div>
-    
-</div>
+<MudCard>
+    <MudCardContent>
+        <MudStack Row="false" Spacing="2">
+            <MudLink Class="d-flex" Color="Color.Dark" Typo="Typo.h5" OnClick="@(() => OpenDialogAsync(CardTaskItem))">@CardTaskItem.Title</MudLink>
+
+            <MudSpacer/>
+            <MudDivider/>
+            <MudSpacer/>
+            <MudText Align="Align.Left"> @CardTaskItem.Description </MudText>
+            <MudStack Row="true" Justify="Justify.SpaceBetween">
+                <MudText> @CardTaskItem.TaskStatus </MudText>
+                <MudText> @sinceCreation </MudText>
+            </MudStack>
+        </MudStack>
+    </MudCardContent>
+</MudCard>
 
 @code {
     [Parameter] 
-    public TaskItemEntity CardTaskItem { get; set; }
+    public TaskItemDTO CardTaskItem { get; set; }
 
     public string sinceCreation = string.Empty;
     
     protected override void OnInitialized()
     {
         sinceCreation = formatservice.TimeSinceCreation(CardTaskItem.Created);
+    }
+    
+    private Task OpenDialogAsync(TaskItemDTO task)
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        var dialogParameters = new DialogParameters<UpdateDialog>
+        {
+            {x => x.CurrentTask, task}
+        };
+
+        return DialogService.ShowAsync<UpdateDialog>(@localizer["Edit"], dialogParameters, options);
     }
 
     

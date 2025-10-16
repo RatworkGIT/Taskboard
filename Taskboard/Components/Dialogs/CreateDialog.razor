@@ -2,12 +2,13 @@
 @using Taskboard.Entities.Task
 @using Taskboard.Services.Task
 @using Taskboard.Services.Update
+@using Taskboard.Models.DTO
 @using TaskStatus = Taskboard.Entities.Task.TaskStatus
 @inject TaskService taskservice
 @inject UpdateService updateservice
 @inject IStringLocalizer<SharedResource> localizer
 
-<MudDialog>
+<MudDialog Class="dialog-background">
     <TitleContent>
         @MudDialog.Title
     </TitleContent>
@@ -27,16 +28,26 @@
     </DialogActions>
 </MudDialog>
 
+<style>
+    .dialog-background {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
 @code {
     [CascadingParameter] 
     private IMudDialogInstance MudDialog { get; set; }
 
     private TaskStatus _taskStatus = TaskStatus.ToDo;
     
-    private TaskItemEntity task = new TaskItemEntity();
+    public TaskItemDTO task = new();
+    
 
     private async void Submit()
     {
+        task.TaskStatus = _taskStatus;
+        task.Created = DateTime.UtcNow;
         await taskservice.CreateTaskAsync(task);
         MudDialog.Close(DialogResult.Ok(true));
         updateservice.CallRequestUpdate();
