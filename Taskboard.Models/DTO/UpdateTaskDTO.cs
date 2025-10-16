@@ -5,7 +5,7 @@ namespace Taskboard.Models.DTO;
 
 public class UpdateTaskDTO
 {
-    public int Id  { get; set; }
+    public required int Id  { get; init; }
     public string Title { get; set; } = String.Empty;
     public string Description { get; set; } = String.Empty;
     public TaskStatus TaskStatus { get; set; }
