@@ -1,4 +1,5 @@
-﻿@using Microsoft.Extensions.Localization
+﻿@using System.ComponentModel.DataAnnotations
+@using Microsoft.Extensions.Localization
 @using Taskboard.Entities.Task
 @using Taskboard.Services.Task
 @using Taskboard.Services.Update
@@ -7,6 +8,7 @@
 @inject TaskService taskservice
 @inject UpdateService updateservice
 @inject ISnackbar Snackbar
+@inject ILogger<CreateDialog> logger
 @inject IStringLocalizer<SharedResource> localizer
 
 <MudDialog Class="dialog-background orange-text">
@@ -52,7 +54,7 @@
 
     private TaskStatus _taskStatus = TaskStatus.ToDo;
     
-    public TaskItemDTO task = new();
+    public CreateTaskDTO task = new();
     
     public Snackbar? snackbar;
     
@@ -77,21 +79,30 @@
         });
     }
 
-    private async void Submit()
+    private async Task Submit()
     {
-        if (successTitle)
+        try
         {
-            task.TaskStatus = _taskStatus;
-            task.Created = DateTimeOffset.UtcNow;
-            await taskservice.CreateTaskAsync(task);
-            MudDialog.Close(DialogResult.Ok(true));
-            updateservice.CallRequestUpdate();
-        } 
-        else
-        {
-            var msg = @localizer["NoTitleInputError"];
-            ShowError(msg);
+            if (successTitle)
+            {
+                task.TaskStatus = _taskStatus;
+                await taskservice.CreateTaskAsync(task);
+                MudDialog.Close(DialogResult.Ok(true));
+                updateservice.CallRequestUpdate();
+            }
+            else
+            {
+                var msg = @localizer["NoTitleInputError"];
+                ShowError(msg);
+
+                throw new ValidationException("Title missing on creation");
+            }
         }
+        catch (ValidationException ex)
+        {
+            logger.LogWarning("Validation failed: {ValidationException}", ex);
+        }
+        
     }
 
     private void Cancel() => MudDialog.Cancel();

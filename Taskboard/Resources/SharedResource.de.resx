@@ -52,4 +52,7 @@
     <data name="NoTitleInputError" xml:space="preserve">
     <value>Titel muss ausgefüllt werden</value>
   </data>
+    <data name="Created" xml:space="preserve">
+        <value>Erstellt vor:</value>
+    </data>
 </root>

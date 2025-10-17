@@ -4,9 +4,9 @@ namespace Taskboard.Services.Task;
 
 public interface ITaskService
 {
-    public Task<TaskItemDTO> CreateTaskAsync(TaskItemDTO task);
-    public Task<List<TaskItemDTO>> GetAllTasksAsync();
-    public Task<TaskItemDTO> GetTaskByIdAsync(Guid id);
-    public Task<TaskItemDTO> UpdateTaskAsync(TaskItemDTO task);
-    public System.Threading.Tasks.Task DeleteTaskAsync(TaskItemDTO task);
+    public Task<ReadTaskDTO> CreateTaskAsync(CreateTaskDTO task);
+    public Task<List<ReadTaskDTO>> GetAllTasksAsync();
+    public Task<ReadTaskDTO> GetTaskByIdAsync(Guid id);
+    public Task<ReadTaskDTO> UpdateTaskAsync(UpdateTaskDTO task);
+    public System.Threading.Tasks.Task DeleteTaskAsync(Guid id);
 }
