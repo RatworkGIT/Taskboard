@@ -21,7 +21,7 @@
             <MudText Align="Align.Left"> @CardTaskItem.Description </MudText>
             <MudStack Row="true" Justify="Justify.SpaceBetween">
                 <MudText> @CardTaskItem.TaskStatus </MudText>
-                <MudText> @sinceCreation </MudText>
+                <MudText Style="font-style: italic;"> @localizer["Created"] @sinceCreation </MudText>
             </MudStack>
         </MudStack>
     </MudCardContent>
@@ -37,7 +37,7 @@
 
 @code {
     [Parameter] 
-    public TaskItemDTO CardTaskItem { get; set; }
+    public ReadTaskDTO CardTaskItem { get; set; }
 
     public string sinceCreation = string.Empty;
     
@@ -47,12 +47,20 @@
         sinceCreation = formatservice.TimeSinceCreation(CardTaskItem.Created);
     }
     
-    private Task OpenDialogAsync(TaskItemDTO task)
+    private Task OpenDialogAsync(ReadTaskDTO task)
     {
         var options = new DialogOptions { CloseOnEscapeKey = true, BackdropClick = false };
+        var updateTask = new UpdateTaskDTO
+        {
+            Id = task.Id,
+            Title = task.Title,
+            Description = task.Description,
+            TaskStatus = task.TaskStatus,
+            Archived = task.Archived
+        };
         var dialogParameters = new DialogParameters<UpdateDialog>
         {
-            {x => x.CurrentTask, task}
+            {x => x.CurrentTask, updateTask}
         };
 
         return DialogService.ShowAsync<UpdateDialog>(@localizer["Edit"], dialogParameters, options);

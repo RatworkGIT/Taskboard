@@ -15,34 +15,34 @@ public class TaskService : ITaskService
         _db = context;
     }
     
-    public async Task<TaskItemDTO> CreateTaskAsync(TaskItemDTO task)
+    public async Task<ReadTaskDTO> CreateTaskAsync(CreateTaskDTO task)
     {
         var entity = task.ToEntity();
         _db.Tasks.Add(entity);
         await _db.SaveChangesAsync();
-        return entity.ToDTO();
+        return entity.ToReadDTO();
     }
 
-    public async Task<List<TaskItemDTO>> GetAllTasksAsync()
+    public async Task<List<ReadTaskDTO>> GetAllTasksAsync()
     {
-        List<TaskItemDTO> dtoList = new();
+        List<ReadTaskDTO> dtoList = new();
         var entities = await _db.Tasks.AsNoTracking().ToListAsync();
 
         foreach (var entity in entities)
         {
-            dtoList.Add(entity.ToDTO());
+            dtoList.Add(entity.ToReadDTO());
         }
 
         return dtoList;
     }
 
-    public async Task<TaskItemDTO> GetTaskByIdAsync(Guid id)
+    public async Task<ReadTaskDTO> GetTaskByIdAsync(Guid id)
     {
         var task = await _db.Tasks.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
-        return task.ToDTO() ?? throw new KeyNotFoundException($"Task with ID: {id} not found");
+        return task.ToReadDTO() ?? throw new KeyNotFoundException($"Task with ID: {id} not found");
     }
 
-    public async Task<TaskItemDTO> UpdateTaskAsync(TaskItemDTO dto)
+    public async Task<ReadTaskDTO> UpdateTaskAsync(UpdateTaskDTO dto)
     {
         var entity = await _db.Tasks.FindAsync(dto.Id);
         if (entity == null)
@@ -55,15 +55,23 @@ public class TaskService : ITaskService
         entity.TaskStatus = dto.TaskStatus;
         
         await _db.SaveChangesAsync();
-        return entity.ToDTO();
+        return entity.ToReadDTO();
     }
 
-    public async System.Threading.Tasks.Task DeleteTaskAsync(TaskItemDTO dto)
+    public async System.Threading.Tasks.Task DeleteTaskAsync(Guid id)
     {
-        var entity = await _db.Tasks.Where(x => x.Id == dto.Id)
-            .ExecuteDeleteAsync();
+        try
+        {
+            var entity = await _db.Tasks.Where(x => x.Id == id)
+                .ExecuteDeleteAsync();
 
 
-        if (entity == 0) throw new KeyNotFoundException($"Task with ID: {dto.Id} not found");
+            if (entity == 0) throw new KeyNotFoundException($"Task with ID: {id} not found");
+        }
+        catch (KeyNotFoundException ex)
+        {
+           
+        }
+
     }
 }

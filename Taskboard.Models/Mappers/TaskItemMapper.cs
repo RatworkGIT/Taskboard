@@ -6,25 +6,23 @@ namespace Taskboard.Models.Mapper;
 public static class TaskItemMapper
 {
     /// Converts from DTO to Entity
-    public static TaskItemEntity ToEntity(this TaskItemDTO dto) => new TaskItemEntity
+    public static TaskItemEntity ToEntity(this CreateTaskDTO dto) => new TaskItemEntity
     {
-        Id = dto.Id == Guid.Empty ? Guid.NewGuid() : dto.Id,
-        Number = dto.Number,
         Title = dto.Title,
         Description = dto.Description,
         TaskStatus = dto.TaskStatus,
-        Created = dto.Created,
-        Archived = dto.Archived
+        Created = DateTimeOffset.UtcNow,
+        Archived = false
     };
     
-    public static TaskItemDTO ToDTO(this TaskItemEntity entity) => new TaskItemDTO
+    public static ReadTaskDTO ToReadDTO(this TaskItemEntity entity) => new()
     {
         Id = entity.Id,
-        Number =  entity.Number,
+        Number = entity.Number,
         Title = entity.Title,
         Description = entity.Description,
         TaskStatus = entity.TaskStatus,
         Created = entity.Created,
-        Archived = entity.Archived
+        Archived = entity.Archived ?? false
     };
 }

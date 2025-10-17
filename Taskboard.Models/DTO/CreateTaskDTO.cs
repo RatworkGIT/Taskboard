@@ -1,13 +1,10 @@
-﻿using Taskboard.Entities.Task;
 using TaskStatus = Taskboard.Entities.Task.TaskStatus;
 
 namespace Taskboard.Models.DTO;
 
-public class UpdateTaskDTO
+public class CreateTaskDTO
 {
-    public Guid Id { get; set; }
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public TaskStatus TaskStatus { get; set; }
-    public bool? Archived { get; set; }
+    public TaskStatus TaskStatus { get; set; } = TaskStatus.ToDo;
 }

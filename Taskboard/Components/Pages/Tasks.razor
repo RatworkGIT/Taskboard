@@ -10,17 +10,17 @@
 
 
 
-<MudDropContainer T="TaskItemDTO" Items="allTasks" ItemsSelector="@((TaskItemDTO task, string dropzone) => task.TaskStatus.ToString() == dropzone)" ItemDropped="TaskMoved" Style="display:flex; flex-direction: row; width: 100%; height: 100%;">
+<MudDropContainer T="ReadTaskDTO" Items="allTasks" ItemsSelector="@((ReadTaskDTO task, string dropzone) => task.TaskStatus.ToString() == dropzone)" ItemDropped="TaskMoved" Style="display:flex; flex-direction: row; width: 100%; height: 100%;">
     <ChildContent>
-        <MudDropZone T="TaskItemDTO" Identifier="ToDo" AllowReorder="true" Style="margin: 2%; display: flex; flex-direction: column; width: 30%; text-align: center; min-height: 100vh;  border: 2px solid #f6f5f3; border-radius: 5px;" CanDrop="((task) => task.TaskStatus is TaskStatus.InProgress or TaskStatus.ToDo )">
+        <MudDropZone T="ReadTaskDTO" Identifier="ToDo" AllowReorder="true" Style="margin: 2%; display: flex; flex-direction: column; width: 30%; text-align: center; min-height: 100vh;  border: 2px solid #f6f5f3; border-radius: 5px;" CanDrop="((task) => task.TaskStatus is TaskStatus.InProgress or TaskStatus.ToDo )">
             <MudText Typo="Typo.h4" Style="margin-top : 2%; margin-bottom: 2%; color: #d3d3d3;">ToDo</MudText>
         </MudDropZone>
 
-        <MudDropZone T="TaskItemDTO" CanDrop="((task) => task.TaskStatus is TaskStatus.ToDo or TaskStatus.InProgress or TaskStatus.Done)" Identifier="InProgress" AllowReorder="true" Style="margin: 2%; display: flex; flex-direction: column; width: 30%; text-align: center; min-height: 100vh; border: 2px solid #f6f5f3; border-radius: 5px;">
+        <MudDropZone T="ReadTaskDTO" CanDrop="((task) => task.TaskStatus is TaskStatus.ToDo or TaskStatus.InProgress or TaskStatus.Done)" Identifier="InProgress" AllowReorder="true" Style="margin: 2%; display: flex; flex-direction: column; width: 30%; text-align: center; min-height: 100vh; border: 2px solid #f6f5f3; border-radius: 5px;">
             <MudText Typo="Typo.h4" Style="margin-top : 2%; margin-bottom: 2%; color: #d3d3d3;">In Progress</MudText>
         </MudDropZone>
 
-        <MudDropZone T="TaskItemDTO" Identifier="Done" AllowReorder="true" Style="margin: 2%; display: flex; flex-direction: column; width: 30%; text-align: center; min-height: 100vh; border: 2px solid #f6f5f3; border-radius: 5px;" CanDrop="((task) => task.TaskStatus is TaskStatus.InProgress or TaskStatus.Done)">
+        <MudDropZone T="ReadTaskDTO" Identifier="Done" AllowReorder="true" Style="margin: 2%; display: flex; flex-direction: column; width: 30%; text-align: center; min-height: 100vh; border: 2px solid #f6f5f3; border-radius: 5px;" CanDrop="((task) => task.TaskStatus is TaskStatus.InProgress or TaskStatus.Done)">
             <MudText Typo="Typo.h4" Style="margin-top : 2%; margin-bottom: 2%; color: #d3d3d3;">Done</MudText>
         </MudDropZone>
     </ChildContent>
@@ -30,9 +30,9 @@
 </MudDropContainer>
 @code {
 
-    private List<TaskItemDTO> allTasks = new();
+    private List<ReadTaskDTO> allTasks = new();
 
-    private async Task TaskMoved(MudItemDropInfo<TaskItemDTO> task)
+    private async Task TaskMoved(MudItemDropInfo<ReadTaskDTO> task)
     {
         
         if (task.DropzoneIdentifier == nameof(TaskStatus.ToDo))
@@ -46,13 +46,12 @@
             task.Item.TaskStatus = TaskStatus.Done;
         }
 
-        TaskItemDTO dto = new TaskItemDTO
+        UpdateTaskDTO dto = new UpdateTaskDTO()
         {
             Id = task.Item.Id,
             Title = task.Item.Title,
             Description = task.Item.Description,
             TaskStatus = task.Item.TaskStatus,
-            Created = task.Item.Created
             
         };
         
@@ -73,7 +72,7 @@
         updateservice.UpdateRequested += UpdateTasks;
     }
 
-    private async Task<List<TaskItemDTO>> LoadTasks()
+    private async Task<List<ReadTaskDTO>> LoadTasks()
     {
         allTasks = await taskservice.GetAllTasksAsync();
         return allTasks;

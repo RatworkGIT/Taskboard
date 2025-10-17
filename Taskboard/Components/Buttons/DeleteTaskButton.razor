@@ -11,7 +11,7 @@
 @inject IDialogService dialogservice
 @inject IStringLocalizer<SharedResource> localizer
 
-<MudButton OnClick="@(() => DeleteTaskAsync(SelectedTask))" Variant="Variant.Filled" Color="Color.Error" ><MudIcon Icon="@Icons.Material.Filled.Delete" Title="@localizer["Delete"]" /></MudButton>
+<MudButton OnClick="@(() => DeleteTaskAsync(SelectedTask.Id))" Variant="Variant.Filled" Color="Color.Error" ><MudIcon Icon="@Icons.Material.Filled.Delete" Title="@localizer["Delete"]" /></MudButton>
 <MudMessageBox @ref="_deleteMsgBox" Title="@localizer["DeleteWarningTitle"]" >
     <MessageContent>
         @localizer["DeleteWarningText"]
@@ -20,12 +20,12 @@
         <MudButton Variant="Variant.Filled" Color="Color.Error" >@localizer["Delete"]</MudButton>
     </YesButton>
     <NoButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Error" >@localizer["Cancel"]</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Default" >@localizer["Cancel"]</MudButton>
     </NoButton>
 </MudMessageBox>
 @code {
     [Parameter]
-    public TaskItemDTO SelectedTask { get; set; }
+    public UpdateTaskDTO SelectedTask { get; set; }
     [Parameter]
     public IMudDialogInstance CurrentDialog { get; set; }
     
@@ -33,7 +33,7 @@
 
     private MudMessageBox _deleteMsgBox;
 
-    private async Task DeleteTaskAsync(TaskItemDTO task)
+    private async Task DeleteTaskAsync(Guid id)
     {
         bool? result = await _deleteMsgBox.ShowAsync(_backdropClick);
         if (result == false)
@@ -44,7 +44,7 @@
         else
         {
             CurrentDialog.Close(DialogResult.Ok((true)));
-            await taskservice.DeleteTaskAsync(task);
+            await taskservice.DeleteTaskAsync(id);
             updateservice.CallRequestUpdate();
         }
 
