@@ -12,15 +12,15 @@
 @inject IStringLocalizer<SharedResource> localizer
 
 <MudButton OnClick="@(() => DeleteTaskAsync(SelectedTask))" Variant="Variant.Filled" Color="Color.Error" ><MudIcon Icon="@Icons.Material.Filled.Delete" Title="@localizer["Delete"]" /></MudButton>
-<MudMessageBox @ref="_deleteMsgBox" Title="@localizer["DeleteWarningTitle"]">
+<MudMessageBox @ref="_deleteMsgBox" Title="@localizer["DeleteWarningTitle"]" >
     <MessageContent>
         @localizer["DeleteWarningText"]
     </MessageContent>
     <YesButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Error" ><MudIcon Icon="@Icons.Material.Filled.DeleteForever" Title="@localizer["Delete"]"></MudIcon></MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Error" >@localizer["Delete"]</MudButton>
     </YesButton>
     <NoButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Error" ><MudIcon Icon="@Icons.Material.Filled.Cancel" Title="@localizer["Cancel"]"></MudIcon></MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Error" >@localizer["Cancel"]</MudButton>
     </NoButton>
 </MudMessageBox>
 @code {
@@ -28,12 +28,14 @@
     public TaskItemDTO SelectedTask { get; set; }
     [Parameter]
     public IMudDialogInstance CurrentDialog { get; set; }
+    
+    private readonly DialogOptions _backdropClick = new() { BackdropClick = false };
 
     private MudMessageBox _deleteMsgBox;
 
     private async Task DeleteTaskAsync(TaskItemDTO task)
     {
-        bool? result = await _deleteMsgBox.ShowAsync();
+        bool? result = await _deleteMsgBox.ShowAsync(_backdropClick);
         if (result == false)
         {
             //Cancelled

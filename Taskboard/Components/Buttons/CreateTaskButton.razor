@@ -5,7 +5,7 @@
 @inject IStringLocalizer<SharedResource> localizer
 
 
-<MudButton @onclick="OpenDialogAsync" Variant="Variant.Filled" Color="Color.Primary"> @localizer["CreateTask"] </MudButton>
+<MudButton @onclick="OpenDialogAsync" Variant="Variant.Filled" Color="Color.Warning"> @localizer["CreateTask"] </MudButton>
 
 @code {
     private Task OpenDialogAsync()

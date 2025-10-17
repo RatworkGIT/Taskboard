@@ -1,0 +1,33 @@
+@using Taskboard.Services.Language
+@using Taskboard.Services.Update
+@inject UpdateService updateservice
+@inject LanguageService languageservice
+
+<MudToggleIconButton Toggled="Language" ToggledChanged="HandleToggle" Color="Color.Warning" Icon="@Icons.Material.Filled.Flag" ToggledIcon="@Icons.Material.Outlined.Flag" title="@(Language ? "EN" : "DE")">
+    
+</MudToggleIconButton>
+
+@code {
+    private bool Language { get; set; }
+    private string cultureString { get; set; }
+    
+    public void HandleToggle(bool toggled)
+    {
+        Language = toggled;
+
+        if (Language)
+        {
+            cultureString = "en";
+            Console.WriteLine($"Now English {cultureString}");
+        }
+        else
+        {
+            cultureString = "de";
+            Console.WriteLine($"Now German: {cultureString}");
+        }
+        
+        languageservice.SetCulture(cultureString);
+        updateservice.CallRequestUpdate();
+        
+    }
+}

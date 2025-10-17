@@ -28,12 +28,12 @@
             <br/>
         <MudTextField MaxLength="200" AutoGrow Lines="5" ShrinkLabel @bind-Value="CurrentTask.Description" Label="@localizer["Description"]" Variant="Variant.Outlined"></MudTextField>
         <br/>
-        <MudSelect @bind-Value="CurrentTask.TaskStatus" Variant="Variant.Outlined" Label="@localizer["TaskStatus"]">
+       <!-- <MudSelect @bind-Value="CurrentTask.TaskStatus" Variant="Variant.Outlined" Label="@localizer["TaskStatus"]">
             @foreach (TaskStatus item in Enum.GetValues(typeof(TaskStatus)))
             {
                 <MudSelectItem Value="@item">@item</MudSelectItem>
             }
-        </MudSelect>
+        </MudSelect> -->
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">@localizer["Cancel"]</MudButton>
@@ -45,6 +45,8 @@
     .dialog-background {
         width: 100%;
         height: 100%;
+        background: #191a1c;
+        color: #d3d3d3;
     }
 </style>
 
