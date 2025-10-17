@@ -82,7 +82,7 @@
         if (successTitle)
         {
             task.TaskStatus = _taskStatus;
-            task.Created = DateTime.UtcNow;
+            task.Created = DateTimeOffset.UtcNow;
             await taskservice.CreateTaskAsync(task);
             MudDialog.Close(DialogResult.Ok(true));
             updateservice.CallRequestUpdate();

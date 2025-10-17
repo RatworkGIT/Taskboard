@@ -2,9 +2,9 @@ namespace Taskboard.Services.Format;
 
 public class FormatService : IFormatService
 {
-    public string TimeSinceCreation(DateTime created)
+    public string TimeSinceCreation(DateTimeOffset created)
     {
-        var span = DateTime.UtcNow - created;
+        var span = DateTimeOffset.UtcNow - created;
         if (span.TotalSeconds < 60)
             return $"{(int)span.TotalSeconds}s ago";
         if (span.TotalMinutes < 60)
