@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.DependencyInjection;
 using System.Globalization;
 using MudBlazor;
+using Taskboard.Services.Language;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,14 +29,15 @@ builder.Services.AddDbContext<TaskContext>(options => options.UseNpgsql(connStri
 builder.Services.AddScoped<TaskService>();
 builder.Services.AddScoped<UpdateService>();
 builder.Services.AddScoped<FormatService>();
+builder.Services.AddScoped<LanguageService>();
 
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
 var app = builder.Build();
 
-var supportedCultures = new[] { "en", "de" };
+var supportedCultures = new[] { "", "de" };
 var localizedOptions = new RequestLocalizationOptions()
-    .SetDefaultCulture("en")
+    .SetDefaultCulture("")
     .AddSupportedCultures(supportedCultures)
     .AddSupportedUICultures(supportedCultures);
 

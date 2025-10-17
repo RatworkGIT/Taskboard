@@ -32,8 +32,18 @@
 </div>
 
 @code {
+    MudTheme _theme = new MudTheme()
+    {
+    
+        PaletteLight = new PaletteLight()
+        {
+            Primary = Colors.Orange.Default,
+            LinesInputs = Colors.Orange.Default,
+            TextPrimary = Colors.Orange.Default,
+            Surface = Colors.Gray.Darken4
+        }
 
-    private MudTheme _theme = new();
+    };
     private bool _isDarkMode;
 
 }

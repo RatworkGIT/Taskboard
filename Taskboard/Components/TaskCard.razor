@@ -9,10 +9,11 @@
 @inject IDialogService DialogService
 @inject IStringLocalizer<SharedResource> localizer
 
-<MudCard>
+<MudCard Class="taskcard">
     <MudCardContent>
         <MudStack Row="false" Spacing="2">
-            <MudLink Class="d-flex" Color="Color.Dark" Typo="Typo.h5" OnClick="@(() => OpenDialogAsync(CardTaskItem))">@CardTaskItem.Title</MudLink>
+            <MudText Align="Align.Left" Color="Color.Warning">#@CardTaskItem.Number</MudText>
+            <MudLink Class="d-flex" Color="Color.Warning" Typo="Typo.h5" OnClick="@(() => OpenDialogAsync(CardTaskItem))" Style="font-weight: bold">@CardTaskItem.Title</MudLink>
 
             <MudSpacer/>
             <MudDivider/>
@@ -26,11 +27,20 @@
     </MudCardContent>
 </MudCard>
 
+<style>
+    .taskcard {
+        background-color: #2b2d30;
+        color: lightgray;
+        margin: 0 2% 5% 2%;
+    }
+</style>
+
 @code {
     [Parameter] 
     public TaskItemDTO CardTaskItem { get; set; }
 
     public string sinceCreation = string.Empty;
+    
     
     protected override void OnInitialized()
     {
@@ -39,7 +49,7 @@
     
     private Task OpenDialogAsync(TaskItemDTO task)
     {
-        var options = new DialogOptions { CloseOnEscapeKey = true };
+        var options = new DialogOptions { CloseOnEscapeKey = true, BackdropClick = false };
         var dialogParameters = new DialogParameters<UpdateDialog>
         {
             {x => x.CurrentTask, task}
