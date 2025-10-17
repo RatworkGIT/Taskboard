@@ -15,6 +15,6 @@ public class TaskItemEntity
     [MaxLength(200)]
     public string Description { get; set; } = String.Empty;
     public TaskStatus TaskStatus { get; set; } = TaskStatus.ToDo;
-    public DateTime Created { get; set; }
+    public DateTimeOffset Created { get; set; }
     public bool? Archived { get; set; }
 }

@@ -2,5 +2,5 @@ namespace Taskboard.Services.Format;
 
 public interface IFormatService
 {
-    public string TimeSinceCreation(DateTime created);
+    public string TimeSinceCreation(DateTimeOffset created);
 }

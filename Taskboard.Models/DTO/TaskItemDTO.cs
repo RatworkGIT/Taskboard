@@ -10,7 +10,7 @@ public class TaskItemDTO
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public TaskStatus TaskStatus { get; set; }
-    public DateTime Created { get; set; }
+    public DateTimeOffset Created { get; set; }
     public bool? Archived { get; set; }
 }
     
